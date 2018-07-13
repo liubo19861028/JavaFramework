@@ -1,0 +1,121 @@
+package com.framework.base;
+
+import java.io.Serializable;
+import java.util.List;
+
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.springframework.stereotype.Repository;
+
+import com.framework.sql.GetAddSql;
+import com.framework.sql.GetDeleteSql;
+import com.framework.sql.GetSelectSql;
+import com.framework.sql.GetUpdateSql;
+
+@Repository
+public interface BaseDao<T extends BaseEntity,PK extends Serializable> {
+	
+	/**
+	 * 根据实体新增，null值不新增
+	 * @param t
+	 * @return
+	 */
+	@InsertProvider(type=GetAddSql.class,method="getAddSql")
+	public Integer add(T t);
+	
+	/**
+	 * 根据实体新增，null值也默认新增null
+	 * @param t
+	 * @return
+	 */
+	@InsertProvider(type=GetAddSql.class,method="getAddAllSql")
+	public Integer addAll(T t);
+	
+	/**
+	 * 根据主键删除
+	 * @param t
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@DeleteProvider(type=GetDeleteSql.class,method="getDeleteSql")
+	public Integer delete(Class clazz,PK pk);
+	
+	
+	/**
+	 * 根据实体更新
+	 * @param t
+	 * @return
+	 */
+	@UpdateProvider(type=GetUpdateSql.class,method="getUpdateSql")
+	public Integer update(T t);
+	
+	
+	/**
+	 * 根据实体更新
+	 * @param t
+	 * @return
+	 */
+	@UpdateProvider(type=GetUpdateSql.class,method="getUpdateAllSql")
+	public Integer updateAll(T t);
+	
+	/**
+	 * 获取所有数据
+	 * @param search 实体
+	 * @return
+	 */
+	@SelectProvider(type=GetSelectSql.class,method="getQuerySql")
+	public List<T> Query(BaseSearch search);
+	
+	/**
+	 * 获取分页数据
+	 * @param search 实体
+	 * @return
+	 */
+	@SelectProvider(type=GetSelectSql.class,method="getQueryPageSql")
+	public List<T> QueryPage(BaseSearch search);
+	
+	/**
+	 * 获取分页总条数
+	 * @param search 
+	 * @return
+	 */
+	@SelectProvider(type=GetSelectSql.class,method="getQueryPageRowCountSql")
+	public Integer QueryPageRowCount(BaseSearch search);
+	
+	/**
+	 * 获取实体
+	 * @param clazz
+	 * @param pk
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@SelectProvider(type=GetSelectSql.class,method="getSql")
+	public T get(Class clazz,PK pk);
+	
+	/**
+	 * 获取下一个值
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@SelectProvider(type=GetSelectSql.class,method="nextIdSql")
+	public Integer nextId(Class clazz);
+	
+	/***
+	 * 是否存在
+	 * @param search
+	 * @return
+	 */
+	@SelectProvider(type=GetSelectSql.class,method="isExistsSql")
+	public Integer isExists(BaseSearch search);
+	
+	/***
+	 * 获取第一行第一列值
+	 * @param search
+	 * @return
+	 */
+	@SelectProvider(type=GetSelectSql.class,method="getStringSql")
+	public String getString(BaseSearch search);
+}

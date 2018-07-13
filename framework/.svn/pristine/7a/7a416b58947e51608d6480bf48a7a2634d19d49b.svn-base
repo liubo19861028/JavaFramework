@@ -1,0 +1,253 @@
+package com.framework;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+//@Resource(name="sqlSessionFactory")
+public class BaseServiceImpl implements BaseService<BaseEntity, Serializable> {
+
+	/*@Autowired
+	SqlSessionFactory sqlSessionFactory;
+	
+	private SqlSession sqlSession;
+	
+	public SqlSession getSqlSession() {
+		return sqlSessionFactory.openSession();
+	}*/
+	
+
+	@Autowired
+	private BaseDao<BaseEntity, Serializable> baseDao;
+
+	/**
+	 * 根据实体新增，null值不新增
+	 * @param t
+	 * @return
+	 */
+	@Override
+	public Integer add(BaseEntity t) {
+		// TODO Auto-generated method stub
+		return baseDao.add(t);
+	}
+
+
+	/**
+	 * 根据实体新增，null值也默认新增null
+	 * @param t
+	 * @return
+	 */
+	@Override
+	public Integer addAll(BaseEntity t) {
+		// TODO Auto-generated method stub
+		return baseDao.addAll(t);
+	}
+
+
+	/**
+	 * 根据主键删除
+	 * @param t
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Integer delete(Class clazz, Serializable pk) {
+		// TODO Auto-generated method stub
+		return baseDao.delete(clazz, pk);
+	}
+
+	/**
+	 * 根据实体更新
+	 * @param t
+	 * @return
+	 */
+	@Override
+	public Integer update(BaseEntity t) {
+		// TODO Auto-generated method stub
+		return baseDao.update(t);
+	}
+
+	/**
+	 * 根据实体更新,并更新null值字段
+	 * @param t
+	 * @return
+	 */
+	@Override
+	public Integer updateAll(BaseEntity t) {
+		// TODO Auto-generated method stub
+		return baseDao.updateAll(t);
+	}
+
+	/**
+	 * 使用事物更新实体数据
+	 * @param list
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public Integer updateTran(List<BaseEntity> list) {
+
+		int i = 0;
+		for (BaseEntity entity : list) {
+			i += baseDao.update(entity);
+		}
+		if(i==list.size()) {
+			return 1;
+		}
+		return 0;
+
+	}
+	
+	/**
+	 * 使用事物更新实体数据，并更新null值数据
+	 * @param list
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public Integer updateAllTran(List<BaseEntity> list) {
+
+		int i = 0;
+		for (BaseEntity entity : list) {
+			i += baseDao.updateAll(entity);
+		}
+		if(i==list.size()) {
+			return 1;
+		}
+		return 0;
+
+	}
+	
+	/**
+	 * 使用事物add实体数据
+	 * @param list
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public Integer addTran(List<BaseEntity> list) {
+
+		int i = 0;
+		for (BaseEntity entity : list) {
+			i += baseDao.add(entity);
+		}
+		if(i==list.size()) {
+			return 1;
+		}
+		return 0;
+
+	}
+	
+	/**
+	 * 使用事物add实体数据，并新增null值数据
+	 * @param list
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public Integer addAllTran(List<BaseEntity> list) {
+
+		int i = 0;
+		for (BaseEntity entity : list) {
+			i += baseDao.addAll(entity);
+		}
+		if(i==list.size()) {
+			return 1;
+		}
+		return 0;
+	}
+	
+	/**
+	 * 获取所有数据
+	 * @param search 实体
+	 * @return
+	 */
+	@Override
+	public List<BaseEntity> Query(BaseSearch search){
+		return baseDao.Query(search);
+	}
+
+	/**
+	 * 获取分页数据
+	 * @param search 实体
+	 * @return
+	 */
+	@Override
+	public List<BaseEntity> QueryPage(BaseSearch search) {
+		// TODO Auto-generated method stub
+		Integer rowCount=QueryPageRowCount(search);
+		List<BaseEntity> list=new ArrayList<BaseEntity>();
+		list=baseDao.QueryPage(search);
+		search.setPageCount(rowCount);
+		return list;
+	}
+
+
+	/**
+	 * 获取分页总条数
+	 * @param search 
+	 * @return
+	 */
+	@Override
+	public Integer QueryPageRowCount(BaseSearch search) {
+		// TODO Auto-generated method stub
+		return baseDao.QueryPageRowCount(search);
+	}
+	
+	/**
+	 * 获取实体
+	 * @param clazz
+	 * @param pk
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public BaseEntity get(Class clazz, Serializable pk) {
+		// TODO Auto-generated method stub
+		return baseDao.get(clazz, pk);
+	}
+
+
+	/**
+	 * 获取下一个值
+	 * @param clazz
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Integer nextId(Class clazz) {
+		// TODO Auto-generated method stub
+		return baseDao.nextId(clazz);
+	}
+
+	/***
+	 * 是否存在
+	 * @param clazz
+	 * @param search
+	 * @return
+	 */
+	@Override
+	public Boolean isExists(BaseSearch search) {
+		// TODO Auto-generated method stub
+		if(baseDao.isExists(search)>0) 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+	@Override
+	public String getString(BaseSearch search) {
+		// TODO Auto-generated method stub
+		return baseDao.getString(search);
+	}
+	
+	
+}

@@ -1,0 +1,7 @@
+package com.framework.beans;
+
+import com.framework.base.BaseEntity;
+
+public class T extends BaseEntity{
+	
+}

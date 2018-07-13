@@ -1,0 +1,41 @@
+package com.framework.sql;
+
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+
+import com.framework.annotation.IsEntity;
+import com.framework.base.BaseEntity;
+import com.framework.exception.DaoException;
+
+public class GetDeleteSql<T extends BaseEntity,PK extends Serializable> {
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })//
+	public String getDeleteSql(Class clazz,PK pk) throws DaoException {
+		StringBuilder sql = new StringBuilder();
+
+	
+		Annotation annotation = clazz.getAnnotation(IsEntity.class);// 获得注解
+		
+		if (annotation == null || ((IsEntity) annotation).table() == null || ((IsEntity) annotation).pk() == null) {
+			
+			throw new DaoException("Dao错误", "实体没有注解:"+clazz.getName());
+		}
+		
+		sql.append("delete " + ((IsEntity) annotation).table() + " ");
+
+		sql.append(" where ");
+		if(pk instanceof Integer) {
+			//如果是数值型
+			sql.append(((IsEntity) annotation).pk() + " = "+pk.toString());
+		}
+		else {
+
+			sql.append(((IsEntity) annotation).pk() + " = '"+pk.toString()+"'");
+		}
+		
+		// System.out.println("最终返回sql:" + sql.toString());
+		return sql.toString();
+
+	}
+
+}

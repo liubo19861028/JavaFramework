@@ -1,0 +1,5 @@
+package com.framework.beans;
+
+public class PK extends Object {
+
+}

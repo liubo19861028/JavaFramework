@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Built-By: tiandonghai
+Build-Jdk: 1.8.0_151
+Build-Id: 
+Build-Number: 
+Build-Tag: 
+Created-By: Maven Integration for Eclipse
+Hercurial-Revision: 
+addDefaultImplementationEntries: true
+addDefaultSpecificationEntries: true
+
