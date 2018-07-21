@@ -1,4 +1,4 @@
-package com.framework.dto; 
+﻿package com.framework.dto; 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +9,6 @@ import org.slf4j.LoggerFactory;
  * 
  * 接口或类的说明: 查询条件数据对象标识接口
  * ========================== <br>
- * 公司：南京壹号家信息科技有限公司 <br>
- * 开发：yisheng.lu@yihaojiaju.com <br>
- * 版本：1.0 <br>
- * 创建时间：2017-11-15 上午9:25:35 <br>
- * ==========================
  *
  */
 public class SearchCriteria implements DataTransferObject {
